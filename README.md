@@ -1,31 +1,31 @@
 # javaly-test-api
 Test API for Javaly
 
-Lifecycle:
+##Lifecycle:
 
 1. User code is injected into MethodHolder.java (TODO)
 2. Test code is injected into StagingMethodTest.java with testwriter.js
 3. Compile
 4. Execute TestEngine and retrieve output JSON from SysOut
 
-USAGE:
+##USAGE:
 
-Compilation 
+###Compilation 
 
 `javac -cp ./;libs/*; -d classes TestEngine.java`
 
-Execution
+###Execution
 
 `java -cp ./;libs/*;classes; TestEngine`
 
-testwriter.js usage 
+###testwriter.js usage 
 
 call the function 
 `writeFile(inputJSONAsText)`
 
-Expected JSON for testwriter.js
+####Expected JSON for testwriter.js
 
-For return type questions
+#####For return type questions
 
 `{
   "testcases": [
@@ -46,7 +46,7 @@ For return type questions
   "methodName": "add"
 }`
 
-For sysout type questions
+#####For sysout type questions
 
 `{
   "testcases": [
@@ -67,7 +67,7 @@ For sysout type questions
   "methodName": "add"
 }`
 
-#Caveat Emptor:
+##Caveat Emptor:
 - Strings NEED to be escaped! On a per parameter basis!
 - For System.out questions, answers have to be stored as Strings and MUST be escaped for the output!
 
