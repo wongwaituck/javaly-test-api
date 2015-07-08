@@ -11,16 +11,22 @@ Lifecycle:
 USAGE:
 
 Compilation 
+
 `javac -cp ./;libs/*; -d classes TestEngine.java`
 
 Execution
+
 `java -cp ./;libs/*;classes; TestEngine`
 
 testwriter.js usage 
-call the function `writeFile(inputJSONAsText)`
+
+call the function 
+`writeFile(inputJSONAsText)`
 
 Expected JSON for testwriter.js
+
 For return type questions
+
 `{
   "testcases": [
     {
@@ -41,6 +47,7 @@ For return type questions
 }`
 
 For sysout type questions
+
 `{
   "testcases": [
     {
