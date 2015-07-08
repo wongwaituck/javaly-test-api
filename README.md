@@ -3,7 +3,7 @@ Test API for Javaly
 
 ##Lifecycle:
 
-1. User code is injected into MethodHolder.java (TODO)
+1. User code is injected into MethodHolder.java
 2. Test code is injected into StagingMethodTest.java with testwriter.js
 3. Compile
 4. Execute TestEngine and retrieve output JSON from SysOut
