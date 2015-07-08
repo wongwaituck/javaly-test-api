@@ -23,4 +23,8 @@ public class Results {
         return results;
     }
 
+    public String toString(){
+      return results.toString();
+    }
+
 }

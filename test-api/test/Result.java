@@ -32,4 +32,18 @@ public class Result {
     public boolean isSuccess() {
         return success;
     }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Description: ");
+        sb.append(description);
+        sb.append("\nExpected: ");
+        sb.append(expected);
+        sb.append("\nActual: ");
+        sb.append(actual);
+        sb.append("\nSuccess: ");
+        sb.append(success);
+        sb.append("\n");
+        return sb.toString();
+    }
 }
