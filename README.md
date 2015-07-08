@@ -1,10 +1,14 @@
 # javaly-test-api
 Test API for Javaly
 
-Usage: 
 Lifecycle:
+
 1. User code is injected into MethodHolder.java (TODO)
 2. Test code is injected into StagingMethodTest.java with testwriter.js
+3. Compile
+4. Execute TestEngine and retrieve output JSON from SysOut
+
+USAGE:
 
 Compilation 
 `javac -cp ./;libs/*; -d classes TestEngine.java`
