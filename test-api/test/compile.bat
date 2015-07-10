@@ -1,3 +1,2 @@
-javac -cp ./;libs/*; -d classes TestEngine.java
-
+javac -cp ./;libs/* -d classes TestEngine.java
 pause

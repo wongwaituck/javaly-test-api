@@ -1,6 +1,9 @@
+package javaly.core;
+
 import org.junit.*;
 import java.io.*;
-import static util.TestUtil.*;
+import javaly.model.*;
+import static javaly.util.TestUtil.*;
 
 /**
  * Test is an adapter that wraps JUnit and provides a familiar interface
@@ -14,7 +17,7 @@ import static util.TestUtil.*;
  * <code>printResults()</code> method to check for any errors before
  * submission to Javaly.
  * <p>
- * As this class is abstract, all Test classes for Javaly that you write must extend this class.
+ * All Test classes for Javaly that you write must import static all methods from this class.
  * <p>
  * Usage is as below:
  * <p>
@@ -25,11 +28,13 @@ import static util.TestUtil.*;
  * You would have the following Test class:
  * <pre>
  * {@code
- * public class AddTest extends Test{
+ * import static javaly.core.Test.*;
+ * public class AddTest{
  *  public static void main(String[] args){
  *    assertEquals(5, [nameOfClass].add(2, 3));
  *    assertEquals(0, [nameOfClass].add(0, 0));
  *    assertEquals(-1, [nameOfClass].add(-1, 0));
+ *    finish();
  *    printResults(); //check whether the test cases are correct before submission to javaly
  *  }
  * }
@@ -39,27 +44,44 @@ import static util.TestUtil.*;
  * Or more generally:
  * <pre>
  * {@code
- * public class GenericTest extends Test{
+ * import static javaly.core.Test.*;
+ * //other import statements
+ * ...
+ *
+ * public class GenericTest{
  *  public static void main(String[] args){
  *  //preparation code
  *   ...
  *  //test code
  *  assertEquals([description,] expectedObject, outputObject);
  *  ...
+ *  //print results for checking
+ *  printResults();
  *  }
  * }
  * }
  * </pre>
  * <p>
- * BEWARE: Testing for system output is very difficult to be coded into the test class. We will provide an interface for that soon.
+ * If you need to check results from <code>stdout</code>, see {@link javaly.core.SysOutInvoker SysOutInvoker}.
  * @author      Clarence Ngoh
  * @author      Wong Wai Tuck
  * @version     1.0
  */
-public abstract class Test{
+public final class Test{
 
   private static final Results results  = new Results();
   private static ByteArrayOutputStream outContent;
+  private static PrintStream defaultSystemOut;
+  private static boolean IS_SERVER_VERSION = false;
+
+  static {
+    //save the original first
+    defaultSystemOut = System.out;
+    outContent = new ByteArrayOutputStream();
+  }
+
+  private Test() {
+  }
 
   /**
     * Compares two objects and saves the result to the results storage.
@@ -101,21 +123,55 @@ public abstract class Test{
     * The objects to be printed must already have the <code>toString()</code> method defined.
     */
   public static void printResults(){
-    System.out.println(results);
-  }
-
-  static void setOutputStream(ByteArrayOutputStream oc){
-    outContent = oc;
-  }
-
-
-  static String getOutputStream(){
-    return captureSystemOutput(outContent);
+    if(!IS_SERVER_VERSION){
+      System.out.println(results);
+    } else{
+      //does nothing in production since it'll mess with the JSON
+    }
   }
 
 
-  static Results getResults(){
+  /**
+    * Retrieves the results assert statements.
+    * <p>
+    * For internal use only.
+    * @return A Results object containing the results of the assert statements
+    */
+  public static Results getResults(){
     return results;
   }
 
+  /**
+    * Sets whether the Test is running on a server.
+    * <p>
+    * For internal use only.
+    * @param isServer     A boolean flag to be set.
+    */
+  public static void setServerVersion(boolean isServer){
+    IS_SERVER_VERSION = isServer;
+  }
+
+  /**
+    * Adds a failed test case (due to a thrown exception) to the test results
+    * <p>
+    * For internal use only.
+    * @param expected     The expected output as a String, to be set at the annotation
+    * @param e            The exception thrown
+    */
+  public static void addExceptionalCase(String expected, Throwable e){
+      results.add(new Result(expected, captureStacktrace(e), false));
+  }
+
+  public static void redirectSysOut(){
+    PrintStream redirect = new PrintStream(outContent);
+    System.setOut(redirect);
+  }
+
+  public static String retrieveSystemOutput() {
+    return captureSystemOutput(outContent);
+  }
+
+  public static void rollbackSysOut() {
+    System.setOut(defaultSystemOut);
+  }
 }

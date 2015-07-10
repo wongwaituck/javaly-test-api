@@ -1,3 +1,5 @@
+package javaly.model;
+
 public class Result {
     private String description;
     private String expected;

@@ -1,8 +1,9 @@
-package util;
+package javaly.util;
 
 import java.io.*;
 
 public class TestUtil {
+    private static final String ERROR_EXP = "Caused by:";
 
     public static String captureSystemOutput(ByteArrayOutputStream outContent) {
         String actualOutput = outContent.toString();
@@ -10,13 +11,13 @@ public class TestUtil {
         return removeTrailingNewLine(actualOutput);
     }
 
-    public static String captureStacktrace(Exception e) {
+    public static String captureStacktrace(Throwable e) {
         StringWriter sw = new StringWriter();
         e.printStackTrace(new PrintWriter(sw));
         String stacktrace = sw.toString();
         //strip the trace from Tester classes onward
-        int index = stacktrace.indexOf("at Test.run");
-        return stacktrace.substring(0,index).trim();
+        int index = stacktrace.indexOf(ERROR_EXP);
+        return stacktrace.substring(index + ERROR_EXP.length(), stacktrace.length()).trim();
     }
 
     public static String removeTrailingNewLine(String s) {

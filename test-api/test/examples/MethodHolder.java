@@ -5,8 +5,6 @@ public class MethodHolder{
   }
 
   public static void sysAdd(int a, int b){
-    if (a == a)
-      throw new RuntimeException();
     System.out.print(a + b);
   }
 }

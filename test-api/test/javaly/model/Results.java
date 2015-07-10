@@ -1,3 +1,5 @@
+package javaly.model;
+
 import java.util.*;
 
 public class Results {

@@ -1,2 +1,2 @@
-java -cp ./;libs/*;classes; TestEngine
+java -cp ./libs/*;classes; TestEngine
 pause
