@@ -11,10 +11,10 @@ public class TestEngine {
         //Sets to server version to prevent printResults from screwing things up
         Test.setServerVersion(true);
 
-        //TODO: Create a factory to control which testing to use
+        //TODO: Create API to provide a test run.
         //TODO: Think about how to integrate arbitrary Test Files (can standardize name of test files?)
         //run the test code
-        Class<?> clazz = SystemOutputTest.class;
+        Class<?> clazz = StagingMethodTest.class;
 
         // Process @TestCase
       	for (Method method : clazz.getDeclaredMethods()) {
@@ -31,7 +31,6 @@ public class TestEngine {
             } catch (Throwable e) {
               Test.addExceptionalCase(test.expectedOutput(), e);
             }
-
             Test.rollbackSysOut();
           }
 

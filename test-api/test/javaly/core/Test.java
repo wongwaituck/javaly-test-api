@@ -18,6 +18,8 @@ import static javaly.util.TestUtil.*;
  * submission to Javaly.
  * <p>
  * All Test classes for Javaly that you write must import static all methods from this class.
+ * All test cases must be defined within methods and be annotated with the @TestCase tag.
+ * Note that the test case method can be of any name should not take in any arguments.
  * <p>
  * Usage is as below:
  * <p>
@@ -27,45 +29,59 @@ import static javaly.util.TestUtil.*;
  * <p>
  * You would have the following Test class:
  * <pre>
- * {@code
  * import static javaly.core.Test.*;
+ * import javaly.core.*;
  * public class AddTest{
- *  public static void main(String[] args){
- *    assertEquals(5, [nameOfClass].add(2, 3));
- *    assertEquals(0, [nameOfClass].add(0, 0));
- *    assertEquals(-1, [nameOfClass].add(-1, 0));
- *    finish();
- *    printResults(); //check whether the test cases are correct before submission to javaly
+ * &#064;TestCase(expectedOutput = "5")
+ *  void test0() {
+ *   assertEquals(5, MethodHolder.add(2, 3));
  *  }
- * }
+ *
+ * {@literal @}TestCase(expectedOutput = "6")
+ *  void test1() {
+ *   assertEquals(6, MethodHolder.add(3, 3));
+ *  }
+ *
+ * {@literal @}TestCase(expectedOutput = "-1")
+ *  void test2() {
+ *    assertEquals(-1, MethodHolder.add(-4, 3));
+ *  }
+ *
  * }
  * </pre>
  * <p>
  * Or more generally:
  * <pre>
- * {@code
  * import static javaly.core.Test.*;
+ * import javaly.core.*;
  * //other import statements
  * ...
  *
  * public class GenericTest{
- *  public static void main(String[] args){
- *  //preparation code
- *   ...
- *  //test code
- *  assertEquals([description,] expectedObject, outputObject);
- *  ...
- *  //print results for checking
- *  printResults();
+ *  {@literal @}TestCase (expectedOutput = "Expected string to display in case of error")
+ *  void testX(){
+ *    //preparation code
+ *    ...
+ *    //test code
+ *    assertEquals([description,] expectedObject, outputObject);
+ *    ...
  *  }
- * }
+ *  //for system.out questions
+ *  {@literal @}TestCase (expectedOutput = "Expected string to display in case of error")
+ *  void testSysOut(){
+ *    //preparation code
+ *    ...
+ *    //test code
+ *    methodThatPrintsToSysOut();
+ *    assertEquals([description,] expectedObject, retrieveSystemOutput());
+ *    ...
+ *  }
  * }
  * </pre>
  * <p>
- * If you need to check results from <code>stdout</code>, see {@link javaly.core.SysOutInvoker SysOutInvoker}.
  * @author      Clarence Ngoh
  * @author      Wong Wai Tuck
- * @version     1.0
+ * @version     0.7
  */
 public final class Test{
 
@@ -84,7 +100,7 @@ public final class Test{
   }
 
   /**
-    * Compares two objects and saves the result to the results storage.
+    * Compares two objects and saves the result to the collated results.
     * <p>
     * The objects to be compared must already have the <code>equals()</code> method defined.
     * @param o1        Expected object to be created
@@ -162,15 +178,29 @@ public final class Test{
       results.add(new Result(expected, captureStacktrace(e), false));
   }
 
+  /**
+    * Redirects system out a temporary stream that can be retrieved.
+    * <p>
+    * For internal use only.
+    */
   public static void redirectSysOut(){
     PrintStream redirect = new PrintStream(outContent);
     System.setOut(redirect);
   }
 
+  /**
+    * Retrieves system output as a String from the redirected stream.
+    * <p>
+    * @return A String with the contents of the redirected stdout stream.
+    */
   public static String retrieveSystemOutput() {
     return captureSystemOutput(outContent);
   }
-
+  /**
+    * Returns the sys out to stdout.
+    * <p>
+    * For internal use only.
+    */
   public static void rollbackSysOut() {
     System.setOut(defaultSystemOut);
   }
