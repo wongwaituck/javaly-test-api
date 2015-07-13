@@ -8,12 +8,9 @@ import java.lang.reflect.Method;
 public class TestEngine {
 
     public static void main(String[] args) {
-        //Sets to server version to prevent printResults from screwing things up
-        Test.setServerVersion(true);
-
-        //TODO: Create API to provide a test run.
         //TODO: Think about how to integrate arbitrary Test Files (can standardize name of test files?)
         //run the test code
+        //THIS FILE IS TO BE HOSTED ON THE SERVER
         Class<?> clazz = StagingMethodTest.class;
 
         // Process @TestCase

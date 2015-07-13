@@ -7,19 +7,14 @@ import static javaly.util.TestUtil.*;
 
 /**
  * Test is an adapter that wraps JUnit and provides a familiar interface
- * for instructors who have previously used JUnit before.
+ * for instructors who have previously used JUnit before which functions
+ * similarly to the Assert class of JUnit.
  * <p>
- * It stores all test results for each execution of assertion statements
- * so that it may be retrieved by our own engine later.
- * <p>
- * However, a key distinction is the fact that assertion failures and other exceptions
- * do not float to the client. Hence, we have provided a
- * <code>printResults()</code> method to check for any errors before
- * submission to Javaly.
- * <p>
- * All Test classes for Javaly that you write must import static all methods from this class.
+ * All Test classes for Javaly that you write should import static all methods from this class.
  * All test cases must be defined within methods and be annotated with the @TestCase tag.
  * Note that the test case method can be of any name should not take in any arguments.
+ * <p>
+ * You may check the results of your test cases with {@link javaly.core.TestEngine#sampleRun TestEngine.sampleRun()}.
  * <p>
  * Usage is as below:
  * <p>
@@ -32,18 +27,18 @@ import static javaly.util.TestUtil.*;
  * import static javaly.core.Test.*;
  * import javaly.core.*;
  * public class AddTest{
- * &#064;TestCase(expectedOutput = "5")
- *  void test0() {
+ *  &#064;TestCase(expectedOutput = "5")
+ *  public void test0() {
  *   assertEquals(5, MethodHolder.add(2, 3));
  *  }
  *
  * {@literal @}TestCase(expectedOutput = "6")
- *  void test1() {
+ *  public void test1() {
  *   assertEquals(6, MethodHolder.add(3, 3));
  *  }
  *
  * {@literal @}TestCase(expectedOutput = "-1")
- *  void test2() {
+ *  public void test2() {
  *    assertEquals(-1, MethodHolder.add(-4, 3));
  *  }
  *
@@ -58,8 +53,8 @@ import static javaly.util.TestUtil.*;
  * ...
  *
  * public class GenericTest{
- *  {@literal @}TestCase (expectedOutput = "Expected string to display in case of error")
- *  void testX(){
+ * {@literal @}TestCase (expectedOutput = "Expected string to display in case of error")
+ *  public void testX(){
  *    //preparation code
  *    ...
  *    //test code
@@ -67,8 +62,8 @@ import static javaly.util.TestUtil.*;
  *    ...
  *  }
  *  //for system.out questions
- *  {@literal @}TestCase (expectedOutput = "Expected string to display in case of error")
- *  void testSysOut(){
+ * {@literal @}TestCase (expectedOutput = "Expected string to display in case of error")
+ *  public void testSysOut(){
  *    //preparation code
  *    ...
  *    //test code
@@ -81,14 +76,13 @@ import static javaly.util.TestUtil.*;
  * <p>
  * @author      Clarence Ngoh
  * @author      Wong Wai Tuck
- * @version     0.7
+ * @version     0.8
  */
 public final class Test{
 
   private static final Results results  = new Results();
   private static ByteArrayOutputStream outContent;
   private static PrintStream defaultSystemOut;
-  private static boolean IS_SERVER_VERSION = false;
 
   static {
     //save the original first
@@ -133,19 +127,13 @@ public final class Test{
   }
 
   /**
-    * Prints the results of the assert statements to the standard output.
-    * This is to allow inspection to ensure the Test class works.
+    * Retrieves system output as a String from the redirected stream.
     * <p>
-    * The objects to be printed must already have the <code>toString()</code> method defined.
+    * @return A String with the contents of the redirected stdout stream.
     */
-  public static void printResults(){
-    if(!IS_SERVER_VERSION){
-      System.out.println(results);
-    } else{
-      //does nothing in production since it'll mess with the JSON
-    }
+  public static String retrieveSystemOutput() {
+    return captureSystemOutput(outContent);
   }
-
 
   /**
     * Retrieves the results assert statements.
@@ -157,15 +145,6 @@ public final class Test{
     return results;
   }
 
-  /**
-    * Sets whether the Test is running on a server.
-    * <p>
-    * For internal use only.
-    * @param isServer     A boolean flag to be set.
-    */
-  public static void setServerVersion(boolean isServer){
-    IS_SERVER_VERSION = isServer;
-  }
 
   /**
     * Adds a failed test case (due to a thrown exception) to the test results
@@ -188,14 +167,7 @@ public final class Test{
     System.setOut(redirect);
   }
 
-  /**
-    * Retrieves system output as a String from the redirected stream.
-    * <p>
-    * @return A String with the contents of the redirected stdout stream.
-    */
-  public static String retrieveSystemOutput() {
-    return captureSystemOutput(outContent);
-  }
+
   /**
     * Returns the sys out to stdout.
     * <p>

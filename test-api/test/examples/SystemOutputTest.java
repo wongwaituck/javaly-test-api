@@ -1,46 +1,27 @@
-//SAMPLE
 import static javaly.core.Test.*;
-import javaly.core.TestCase;
+import javaly.core.*;
 
-public class SystemOutputTest{
+public class SystemOutputTest {
 
-  public static void main(String[] args){
-    redirectSysOut();
+    public static void main(String[] args){
+        TestEngine.sampleRun(new StagingMethodTest());
+    }
 
-    test1();
-    test2();
-    test3();
+    @TestCase(expectedOutput = "5")
+    public void test0() {
+        MethodHolder.add(2,3);
+        assertEquals("5", retrieveSystemOutput());
+    }
 
-    rollbackSysOut();
+    @TestCase(expectedOutput = "6")
+    public void test1() {
+        MethodHolder.add(3,3);
+        assertEquals("6", retrieveSystemOutput());
+    }
 
-    printResults();
-  }
-
-  //sample sys out case
-  @TestCase (expectedOutput = "3")
-  static void test1() {
-    MethodHolder.sysAdd(1,2);
-    assertEquals("3", retrieveSystemOutput());
-  }
-
-  //sample returnable case
-  @TestCase (expectedOutput = "3")
-  static void test2() {
-    assertEquals(3, new MethodHolder.add(1, 2));
-  }
-
-
-  @TestCase (expectedOutput = "0")
-  static void test2() {
-    MethodHolder.sysAdd(0,0);
-    assertEquals("0", retrieveSystemOutput());
-  }
-
-  @TestCase (expectedOutput = "-1")
-  static void test3() {
-    MethodHolder.sysAdd(1,-2);
-    assertEquals("-1", retrieveSystemOutput());
-  }
-
-
+    @TestCase(expectedOutput = "-1")
+    public void test2() {
+        MethodHolder.add(-4,3);
+        assertEquals("-1", retrieveSystemOutput());
+    }
 }

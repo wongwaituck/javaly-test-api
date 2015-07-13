@@ -1,2 +1,2 @@
-java -cp ./libs/*;classes; StagingMethodTest
+java -cp ./javaly.jar;classes; TestEngine
 pause

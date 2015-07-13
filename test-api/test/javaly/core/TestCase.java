@@ -10,7 +10,7 @@ import java.lang.annotation.Documented;
  * {@literal @}TestCase is an annotation that tells our test engine which methods are test cases.
  * This is to allow our test engine to catch any exceptions that may occur when the user runs the code.
  * All test cases must be defined within methods and be annotated with the @TestCase tag.
- * Note that the test case method can be of any name should not take in any arguments.
+ * Note that the test case method can be of any name should not take in any arguments and the visibility should be <code>public</code>
  * <p>
  * Usage is as below:
  * <p>
@@ -23,18 +23,18 @@ import java.lang.annotation.Documented;
  * import static javaly.core.Test.*;
  * import javaly.core.*;
  * public class AddTest{
- *	{@literal @}TestCase(expectedOutput = "5")
- *  void test0() {
+ * {@literal @}TestCase(expectedOutput = "5")
+ *  public void test0() {
  *   assertEquals(5, MethodHolder.add(2, 3));
  *  }
  *
- *	{@literal @}TestCase(expectedOutput = "6")
- *  void test1() {
+ * {@literal @}TestCase(expectedOutput = "6")
+ *  public void test1() {
  *   assertEquals(6, MethodHolder.add(3, 3));
  *  }
  *
- *	{@literal @}TestCase(expectedOutput = "-1")
- *  void test2() {
+ * {@literal @}TestCase(expectedOutput = "-1")
+ *  public void test2() {
  *    assertEquals(-1, MethodHolder.add(-4, 3));
  *  }
  *
@@ -49,8 +49,8 @@ import java.lang.annotation.Documented;
  * ...
  *
  * public class GenericTest{
- *	{@literal @}TestCase (expectedOutput = "Expected string to display in case of error")
- *  void testX(){
+ * {@literal @}TestCase (expectedOutput = "Expected string to display in case of error")
+ *  public void testX(){
  *    //preparation code
  *    ...
  *    //test code
@@ -58,8 +58,8 @@ import java.lang.annotation.Documented;
  *    ...
  *  }
  *  //for system.out questions
- *	{@literal @}TestCase (expectedOutput = "Expected string to display in case of error")
- *  void testSysOut(){
+ * {@literal @}TestCase (expectedOutput = "Expected string to display in case of error")
+ *  public void testSysOut(){
  *    //preparation code
  *    ...
  *    //test code
@@ -71,11 +71,10 @@ import java.lang.annotation.Documented;
  * </pre>
  * <p>
  * @author      Wong Wai Tuck
- * @version     0.7
+ * @version     0.8
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD) //can use in method only.
 public @interface TestCase {
-
 	public String expectedOutput() default "UNDEFINED, PLEASE CONTACT QUESTION SETTER";
 }
