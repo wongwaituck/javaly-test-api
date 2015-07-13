@@ -1,7 +1,7 @@
 var fs = require('fs');
 var filepath = './';
 
-var text = {"testCases":[{"input":"2, 3","output":"\"5\""},{"input":"3, 3","output":"\"6\""},{"input":"-4, 3","output":"\"-1\""}],"questionType":"SYSTEM_OUT","methodName":"add","static":true};
+var text = {"testCases":[{"preCode":"System.out.println(\"Lol\");","input":"2, 3","output":"\"5\""},{"preCode":"","input":"3, 3","output":"\"6\""},{"preCode":"","input":"-4, 3","output":"\"-1\""}],"questionType":"SYSTEM_OUT","methodName":"add","static":true};
 
 function writeFile (testCaseData) {
   var fileName = 'StagingMethodTest.java';
@@ -42,16 +42,17 @@ function buildStatement (testCase, questionType, methodName, isStatic, count) {
     /*
     Structure:
       @TestCase (expectedOutput = "X")
-      void test<count>(){
+      public void test<count>(){
         assertEquals(output, new MethodHolder().methodName(input));
       }
     */
     statement = '@TestCase (expectedOutput = \"' +
                 testCase["output"] +
                 '\")' +
-                'void test' +
+                'public void test' +
                 count +
                 '(){' +
+                testCase["preCode"] +
                 'assertEquals(' +
                 testCase["output"] +
                 ', ' +
@@ -66,7 +67,7 @@ function buildStatement (testCase, questionType, methodName, isStatic, count) {
     /*
     Structure:
       @TestCase (expectedOutput = "X")
-      void test<count>(){
+      public void test<count>(){
         new MethodHolder.methodName(params);
         assertEquals(output, retrieveSystemOutput());
       }
@@ -74,9 +75,10 @@ function buildStatement (testCase, questionType, methodName, isStatic, count) {
     statement = '@TestCase (expectedOutput = ' +
                 testCase["output"] +
                 ')' +
-                'void test' +
+                'public void test' +
                 count +
                 '(){' +
+                testCase["preCode"] +
                 methodInvoker +
                 methodName +
                 '(' +
