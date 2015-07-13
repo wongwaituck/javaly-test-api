@@ -1,3 +1,5 @@
+package javaly.core;
+
 import com.google.gson.*;
 import java.io.*;
 import javaly.model.*;
@@ -7,14 +9,8 @@ import java.lang.reflect.Method;
 
 public class TestEngine {
 
-    public static void main(String[] args) {
-        //Sets to server version to prevent printResults from screwing things up
-        Test.setServerVersion(true);
-
-        //TODO: Create API to provide a test run.
-        //TODO: Think about how to integrate arbitrary Test Files (can standardize name of test files?)
-        //run the test code
-        Class<?> clazz = StagingMethodTest.class;
+    public static void sampleRun(Object obj) {
+        Class<?> clazz = obj.getClass();
 
         // Process @TestCase
       	for (Method method : clazz.getDeclaredMethods()) {
