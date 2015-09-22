@@ -1,2 +1,2 @@
-java -cp ./javaly.jar;classes; TestEngine
+java -cp ./libs/*;classes; StupidTest
 pause

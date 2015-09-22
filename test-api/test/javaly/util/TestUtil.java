@@ -25,9 +25,9 @@ public class TestUtil {
     }
 
     public static String removeTrailingNewLine(String s){
-      if(s.substring(s.length() - 2, s.length()).equals("\r\n")){
+      if(s.length() > 1 && s.substring(s.length() - 2, s.length()).equals("\r\n")){
         return s.substring(0, s.length() - 2);
-      } else if (s.substring(s.length() - 1, s.length()).equals("\n")){
+      } else if (s.length() > 0 && s.substring(s.length() - 1, s.length()).equals("\n")){
         return s.substring(0, s.length() - 1);
       } else {
         return s;

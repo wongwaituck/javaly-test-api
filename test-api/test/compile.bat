@@ -1,2 +1,2 @@
-javac -cp ./javaly.jar;./ -d classes TestEngine.java
+javac -cp libs/*;./ -d classes StupidTest.java
 pause

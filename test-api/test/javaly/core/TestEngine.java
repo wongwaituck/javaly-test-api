@@ -72,8 +72,8 @@ public class TestEngine {
       	}
 
         //get the results
-        Results r = Test.getResults();
-
+        Runs r = Test.getRuns();
+        
         //Output the result as JSON to System.out
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         System.out.println(gson.toJson(r));

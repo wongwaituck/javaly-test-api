@@ -80,9 +80,12 @@ import static javaly.util.TestUtil.*;
  */
 public final class Test{
 
+//I probably should refactor the sys out code to another
   private static final Results results  = new Results();
+  private static final Runs runs = new Runs();
   private static ByteArrayOutputStream outContent;
   private static PrintStream defaultSystemOut;
+  private static boolean hasRetrieved = false;
 
   static {
     //save the original first
@@ -122,7 +125,11 @@ public final class Test{
     } catch (Exception e){
       r = new Result(description, String.valueOf(o1), String.valueOf(captureStacktrace(e)), false);
     } finally {
-      results.add(r);
+      if(hasRetrieved){
+        runs.add(new Run(r, ""));
+      } else {
+        runs.add(new Run(r, retrieveSystemOutput()));
+      }
     }
   }
 
@@ -132,6 +139,7 @@ public final class Test{
     * @return A String with the contents of the redirected stdout stream.
     */
   public static String retrieveSystemOutput() {
+    hasRetrieved = true;
     return captureSystemOutput(outContent);
   }
 
@@ -147,6 +155,17 @@ public final class Test{
 
 
   /**
+    * Retrieves the runs from assert statements.
+    * <p>
+    * For internal use only.
+    * @return A Runs object containing the all the runs of each of the assert statements
+    */
+  public static Runs getRuns(){
+    return runs;
+  }
+
+
+  /**
     * Adds a failed test case (due to a thrown exception) to the test results
     * <p>
     * For internal use only.
@@ -154,7 +173,12 @@ public final class Test{
     * @param e            The exception thrown
     */
   public static void addExceptionalCase(String expected, Throwable e){
-      results.add(new Result(expected, captureStacktrace(e), false));
+      String sysOut = "";
+      if(!hasRetrieved){
+        sysOut = retrieveSystemOutput();
+      }
+      Result r = new Result(expected, captureStacktrace(e), false);
+      runs.add(new Run(r, sysOut));
   }
 
   /**
@@ -165,6 +189,7 @@ public final class Test{
   public static void redirectSysOut(){
     PrintStream redirect = new PrintStream(outContent);
     System.setOut(redirect);
+
   }
 
 
@@ -175,5 +200,6 @@ public final class Test{
     */
   public static void rollbackSysOut() {
     System.setOut(defaultSystemOut);
+    hasRetrieved = false;
   }
 }
