@@ -1,2 +1,2 @@
-java -cp ./libs/*;classes; StupidTest
+java -cp ./libs/*;classes; Tester
 pause

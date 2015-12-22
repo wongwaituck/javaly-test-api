@@ -1,2 +1,2 @@
-javac -cp libs/*;./ -d classes StupidTest.java
+javac -cp libs/*;./ -d classes Tester.java
 pause

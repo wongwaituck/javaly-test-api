@@ -4,7 +4,9 @@ public class StagingMethodTest{
 	@TestCase(expectedOutput="10")
 	public void test0(){
 		int[] arr ={1,2,3,4};
-
+		if(arr.length > 2){
+			throw new NullPointerException();
+		}
 		assertEquals("{1,2,3,4}", 10, Adder.add(arr));
 	}
 
