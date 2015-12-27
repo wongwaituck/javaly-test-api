@@ -4,7 +4,7 @@ import java.io.*;
 
 public class TestUtil {
     private static final String ERROR_EXP = "Caused by:";
-    private static final String NO_SYS_OUT_ERROR = "ERROR : No system output found!";
+    private static final String NO_SYS_OUT_ERROR = "";
 
     public static String captureSystemOutput(ByteArrayOutputStream outContent) {
         String actualOutput = outContent.toString();
