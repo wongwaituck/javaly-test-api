@@ -80,8 +80,6 @@ import static javaly.util.TestUtil.*;
  */
 public final class Test{
 
-//I probably should refactor the sys out code to another
-  private static final Results results  = new Results();
   private static final Runs runs = new Runs();
   private static ByteArrayOutputStream outContent;
   private static PrintStream defaultSystemOut;
@@ -119,11 +117,11 @@ public final class Test{
     Result r = null;
     try {
       Assert.assertEquals(o1, o2);
-      r = new Result(description, String.valueOf(o1), String.valueOf(o2), true);
+      r = new Result(description, o1, o2, true);
     } catch (AssertionError e){
-      r = new Result(description, String.valueOf(o1), String.valueOf(o2), false);
+      r = new Result(description, o1, o2, false);
     } catch (Exception e){
-      r = new Result(description, String.valueOf(o1), String.valueOf(captureStacktrace(e)), false);
+      r = new Result(description, o1, String.valueOf(captureStacktrace(e)), false);
     } finally {
       if(hasRetrieved){
         runs.add(new Run(r, ""));
@@ -143,15 +141,6 @@ public final class Test{
     return captureSystemOutput(outContent);
   }
 
-  /**
-    * Retrieves the results assert statements.
-    * <p>
-    * For internal use only.
-    * @return A Results object containing the results of the assert statements
-    */
-  public static Results getResults(){
-    return results;
-  }
 
 
   /**
@@ -190,6 +179,13 @@ public final class Test{
     PrintStream redirect = new PrintStream(outContent);
     System.setOut(redirect);
 
+  }
+
+  public static void convertLastRunToHidden(){
+    Run run = runs.popRun();
+    Resultable result = run.getResult();
+    run.setResult(HiddenResult.convertResultToHidden(result));
+    runs.add(run);
   }
 
 

@@ -1,12 +1,12 @@
 package javaly.model;
 
-public class Result {
+public class Result implements Resultable{
     private String description;
-    private String expected;
-    private String actual;
+    private Object expected;
+    private Object actual;
     private boolean success;
 
-    public Result(String description, String expected, String actual, boolean success) {
+    public Result(String description, Object expected, Object actual, boolean success) {
         this.description = description;
         this.expected = expected;
         this.actual = actual;
@@ -14,7 +14,7 @@ public class Result {
     }
 
 
-    public Result(String expected, String actual, boolean success) {
+    public Result(Object expected, Object actual, boolean success) {
         this("", expected, actual, success);
     }
 
@@ -22,11 +22,11 @@ public class Result {
         return description;
     }
 
-    public String getExpected() {
+    public Object getExpected() {
         return expected;
     }
 
-    public String getActual() {
+    public Object getActual() {
         return actual;
 
     }

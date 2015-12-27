@@ -29,4 +29,15 @@ public class Runs {
       return runs.toString();
     }
 
+    public Run popRun(){
+      return runs.remove(runs.size() - 1);
+    }
+
+    public void convertLastRunToHidden(){
+      Run run = popRun();
+      Resultable result = run.getResult();
+      run.setResult(HiddenResult.convertResultToHidden(result));
+      runs.add(run);
+    }
+
 }

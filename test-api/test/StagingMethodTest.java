@@ -10,9 +10,9 @@ public class StagingMethodTest{
 		assertEquals("{1,2,3,4}", 10, Adder.add(arr));
 	}
 
-	@TestCase(expectedOutput="4")
+	@TestCase(expectedOutput="4", hidden=true)
 	public void test1(){
 		int[] arr = {1,1,1,1};
-		assertEquals("{1,1,1,1}", 4, Adder.add(arr));
+		assertEquals("objects are identical", 4, Adder.add(arr));
 	}
 }

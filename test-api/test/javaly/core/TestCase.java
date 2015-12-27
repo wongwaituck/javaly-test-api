@@ -77,4 +77,5 @@ import java.lang.annotation.Documented;
 @Target(ElementType.METHOD) //can use in method only.
 public @interface TestCase {
 	public String expectedOutput() default "UNDEFINED, PLEASE CONTACT QUESTION SETTER";
+	public boolean hidden() default false;
 }
