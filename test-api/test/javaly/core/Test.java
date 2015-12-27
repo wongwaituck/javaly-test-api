@@ -84,11 +84,13 @@ public final class Test{
   private static ByteArrayOutputStream outContent;
   private static PrintStream defaultSystemOut;
   private static boolean hasRetrieved = false;
+  private static ExpectedThrowable expected;
 
   static {
     //save the original first
     defaultSystemOut = System.out;
     outContent = new ByteArrayOutputStream();
+    resetThrowable();
   }
 
   private Test() {
@@ -170,6 +172,17 @@ public final class Test{
       runs.add(new Run(r, sysOut));
   }
 
+  public static void addExceptionRun (Throwable e){
+      Result r = expected.matchThrowable(e);
+
+      String sysOut = "";
+      if(!hasRetrieved){
+        sysOut = retrieveSystemOutput();
+      }
+
+      runs.add(new Run(r, sysOut));
+  }
+
   /**
     * Redirects system out a temporary stream that can be retrieved.
     * <p>
@@ -197,5 +210,17 @@ public final class Test{
   public static void rollbackSysOut() {
     System.setOut(defaultSystemOut);
     hasRetrieved = false;
+  }
+
+  public static ExpectedThrowable getExpectedThrowable(){
+    return expected;
+  }
+
+  public static void expectThrowable(ExpectedThrowable e) {
+    expected = e;
+  }
+
+  public static void resetThrowable(){
+    expected = ExpectedThrowable.EXCEPTION_NONE;
   }
 }

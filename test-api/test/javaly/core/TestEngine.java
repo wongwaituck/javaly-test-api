@@ -64,9 +64,15 @@ public class TestEngine {
             try {
               method.invoke(clazz.newInstance());
             } catch (Throwable e) {
-              Test.addExceptionalCase(test.expectedOutput(), e);
+              //process expected throwables
+              if(!ExpectedThrowable.isNoneException(Test.getExpectedThrowable())){
+                Test.addExceptionRun(e.getCause());
+              } else{
+                Test.addExceptionalCase(test.expectedOutput(), e);
+              }
             }
             Test.rollbackSysOut();
+            Test.resetThrowable();
             //check the result
             //if the result is from a hidden testcase then change it to a hiddenresult
             if(test.hidden()){
