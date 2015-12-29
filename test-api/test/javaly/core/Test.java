@@ -216,8 +216,14 @@ public final class Test{
     return expected;
   }
 
-  public static void expectThrowable(ExpectedThrowable e) {
-    expected = e;
+  public static void expectThrowable(Throwable e) {
+    ExpectedThrowable et = new ExpectedThrowable(e);
+    expected = et;
+  }
+
+  public static void expectThrowable(String description, Throwable e) {
+    ExpectedThrowable et = new ExpectedThrowable(e, description);
+    expected = et;
   }
 
   public static void resetThrowable(){
