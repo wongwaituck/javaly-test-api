@@ -1,3 +1,8 @@
+# Download the javaly.jar and include it in the class path
+[Download javaly.jar](https://github.com/wongwaituck/javaly-test-api/raw/master/test-api/test/libs/javaly.jar)
+## Then use the below class as a guideline for writing your own classes!
+
+``` java
 //these are the imports you need, add more if your code requires it!
 import static javaly.core.Test.*;
 import javaly.core.*;
@@ -48,7 +53,14 @@ public class StagingMethodTest{
 		assertEquals("{1,1,1,1}", "4", retrieveSystemOutput());
 	}
 
+  // compile this file with java -cp javaly.jar StagingMethodTest.java
+  // together with the implemented code (in this case in class Adder with the method add(int a, int b))
+  // and run as per normal!
+  // if it compiles and runs properly, it will work on the server end (:
 	public static void main(String[] args){
 		TestEngine.sampleRun(new StagingMethodTest());
 	}
 }
+```
+
+## Copy and paste the above code to the UI and test your question!

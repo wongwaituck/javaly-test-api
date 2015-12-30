@@ -28,17 +28,17 @@ import static javaly.util.TestUtil.*;
  * import javaly.core.*;
  * public class AddTest{
  *  &#064;TestCase(expectedOutput = "5")
- *  public void test0() {
+ *  public void test0() throws Exception{
  *   assertEquals(5, MethodHolder.add(2, 3));
  *  }
  *
  * {@literal @}TestCase(expectedOutput = "6")
- *  public void test1() {
+ *  public void test1() throws Exception{
  *   assertEquals(6, MethodHolder.add(3, 3));
  *  }
  *
  * {@literal @}TestCase(expectedOutput = "-1")
- *  public void test2() {
+ *  public void test2() throws Exception{
  *    assertEquals(-1, MethodHolder.add(-4, 3));
  *  }
  *
@@ -54,7 +54,16 @@ import static javaly.util.TestUtil.*;
  *
  * public class GenericTest{
  * {@literal @}TestCase (expectedOutput = "Expected string to display in case of error")
- *  public void testX(){
+ *  public void testX() throws Exception{
+ *    //preparation code
+ *    ...
+ *    //test code
+ *    assertEquals([description,] expectedObject, outputObject);
+ *    ...
+ *  }
+ *  //if you wish to hide the testcase
+ * {@literal @}TestCase (expectedOutput = "Expected string to display in case of error", hidden=true)
+ *  public void testY() throws Exception{
  *    //preparation code
  *    ...
  *    //test code
@@ -63,7 +72,7 @@ import static javaly.util.TestUtil.*;
  *  }
  *  //for system.out questions
  * {@literal @}TestCase (expectedOutput = "Expected string to display in case of error")
- *  public void testSysOut(){
+ *  public void testSysOut() throws Exception{
  *    //preparation code
  *    ...
  *    //test code
@@ -71,12 +80,22 @@ import static javaly.util.TestUtil.*;
  *    assertEquals([description,] expectedObject, retrieveSystemOutput());
  *    ...
  *  }
+ *  //for exception questions
+ * {@literal @}TestCase (expectedOutput = "Expected string to display in case of error")
+ *  public void testSysOut() throws Exception{
+ *    //preparation code (any throwable)
+ *    expectThrowable(new Exception("message here"));
+ *    ...
+ *    //test code
+ *    methodThatThrowsException();
+ *    ...
+ *  }
  * }
  * </pre>
  * <p>
  * @author      Clarence Ngoh
  * @author      Wong Wai Tuck
- * @version     0.8
+ * @version     0.9
  */
 public final class Test{
 
@@ -144,6 +163,27 @@ public final class Test{
   }
 
 
+  /**
+    * Prepares the test to check whether a particular Throwable is thrown by the method to be tested
+    * <p>
+    * @param e            The exception thrown
+    */
+  public static void expectThrowable(Throwable e) {
+    ExpectedThrowable et = new ExpectedThrowable(e);
+    expected = et;
+  }
+
+  /**
+    * Prepares the test to check whether a particular Throwable is thrown by the method to be tested with a description for this particular test case
+    * <p>
+    * @param description        Description of the test case
+    * @param e            The exception thrown
+    */
+  public static void expectThrowable(String description, Throwable e) {
+    ExpectedThrowable et = new ExpectedThrowable(e, description);
+    expected = et;
+  }
+
 
   /**
     * Retrieves the runs from assert statements.
@@ -172,6 +212,13 @@ public final class Test{
       runs.add(new Run(r, sysOut));
   }
 
+
+  /**
+    * Adds a test case (due to an expected thrown exception) to the test results
+    * <p>
+    * For internal use only.
+    * @param e            The Throwable thrown
+    */
   public static void addExceptionRun (Throwable e){
       Result r = expected.matchThrowable(e);
 
@@ -194,6 +241,11 @@ public final class Test{
 
   }
 
+  /**
+    * Hides the output of the last run by converting it to a HiddenResult from a Resultable
+    * <p>
+    * For internal use only.
+    */
   public static void convertLastRunToHidden(){
     Run run = runs.popRun();
     Resultable result = run.getResult();
@@ -212,20 +264,21 @@ public final class Test{
     hasRetrieved = false;
   }
 
+  /**
+    * Gets the current ExpectedThrowable in the Test that is defined by the user-defined testcase or the default expected throwable
+    * <p>
+    * For internal use only.
+    * @return an ExpectedThrowable object which is what the Test expects to be thrown
+    */
   public static ExpectedThrowable getExpectedThrowable(){
     return expected;
   }
 
-  public static void expectThrowable(Throwable e) {
-    ExpectedThrowable et = new ExpectedThrowable(e);
-    expected = et;
-  }
-
-  public static void expectThrowable(String description, Throwable e) {
-    ExpectedThrowable et = new ExpectedThrowable(e, description);
-    expected = et;
-  }
-
+  /**
+    * Resets the expected throwable to the default(none).
+    * <p>
+    * For internal use only.
+    */
   public static void resetThrowable(){
     expected = ExpectedThrowable.EXCEPTION_NONE;
   }

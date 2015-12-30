@@ -1,2 +1,2 @@
-java -cp ./libs/*;classes; Tester
+java -cp ./libs/*;classes; StagingMethodTest
 pause
