@@ -71,8 +71,10 @@ public class TestEngine {
                 Test.addExceptionalCase(test.expectedOutput(), e);
               }
             }
+
+            Test.failIfExpectedNotThrown();
             Test.rollbackSysOut();
-            Test.resetThrowable();
+
             //check the result
             //if the result is from a hidden testcase then change it to a hiddenresult
             if(test.hidden()){

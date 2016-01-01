@@ -20,7 +20,7 @@ public class StagingMethodTest{
 
 	//you may hide test cases by passing a hidden=true flag as below!
 	@TestCase(expectedOutput="4", hidden=true)
-	public void test1() throws Exception{
+	public void test1(){
 		int[] arr = {1,1,1,1};
 		assertEquals("{1,1,1,1}", 4, Adder.add(arr));
 	}
@@ -33,10 +33,9 @@ public class StagingMethodTest{
 		//expectThrowable MUST come before all other code within the method
 		expectThrowable("code should throw NullPointerException with message \"this is a test!\"", new NullPointerException("this is a test!"));
 		int[] arr = {1,1,1,1};
-		if(arr.length > 2){
+		if(arr.length < 10){
 			throw new NullPointerException("this is a test!");
 		}
-		assertEquals("{1,1,1,1}", 4, Adder.add(arr));
 	}
 
 	// if you wish to check against the system output after a method call, you may use the retreiveSystemOutput() method!

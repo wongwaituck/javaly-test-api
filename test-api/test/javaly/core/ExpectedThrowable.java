@@ -31,6 +31,18 @@ public class ExpectedThrowable{
     this.description = description;
   }
 
+  public Class<?> getClazz(){
+    return clazz;
+  }
+
+  public String getDescription(){
+    return description;
+  }
+
+  public String getMessage(){
+    return message;
+  }
+
   public Result matchThrowable(Throwable e){
     //do not match message if expectedthrowable message is null
     Result r = null;

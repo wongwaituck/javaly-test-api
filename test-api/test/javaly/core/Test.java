@@ -228,6 +228,7 @@ public final class Test{
       }
 
       runs.add(new Run(r, sysOut));
+      resetThrowable();
   }
 
   /**
@@ -281,5 +282,22 @@ public final class Test{
     */
   public static void resetThrowable(){
     expected = ExpectedThrowable.EXCEPTION_NONE;
+  }
+
+  /**
+    * Fails the testcase if expected exception is not thrown.
+    * <p>
+    * For internal use only.
+    */
+  public static void failIfExpectedNotThrown(){
+    if(!expected.equals(ExpectedThrowable.EXCEPTION_NONE)){
+      String sysOut = "";
+      if(!hasRetrieved){
+        sysOut = retrieveSystemOutput();
+      }
+      Result r = new Result(expected.getDescription(), expected.getClazz().getName(), "no exception thrown", false);
+      runs.add(new Run(r, sysOut));
+      resetThrowable();
+    }
   }
 }
